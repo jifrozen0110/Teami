@@ -2,7 +2,9 @@ package or.korea.teami.controller;
 
 import static or.korea.teami.entity.HttpStatusResponseEntity.*;
 
+import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.Date;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,12 +48,14 @@ public class SignController {
 
 	@ApiOperation(value="회원가입",notes = "회원가입 한다.")
 	@PostMapping(value="/signup")
-	public ResponseEntity<HttpStatus> signup(@ApiParam(value = "회원ID : 이메일", required = true) @RequestParam String id,
+	public ResponseEntity<HttpStatus> signup(@ApiParam(value = "회원ID : 이메일", required = true) @RequestParam String email,
 											@ApiParam(value = "비밀번호", required = true) @RequestParam String password,
 											@ApiParam(value = "이름", required = true) @RequestParam String name){
+		SimpleDateFormat format1 = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss");
+		Date time = new Date();
 
 		userRepository.save(User.builder()
-			.email(id)
+			.email(email)
 			.password(passwordEncoder.encode(password))
 			.name(name)
 			.roles(Collections.singletonList("ROLE_USER"))
