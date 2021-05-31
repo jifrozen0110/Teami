@@ -45,6 +45,7 @@ import lombok.ToString;
 public class User implements UserDetails {
 
 	@Id // pk
+	@Column(name = "user_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	@Email
@@ -101,5 +102,9 @@ public class User implements UserDetails {
 	@Override
 	public boolean isEnabled() {
 		return true;
+	}
+
+	public void updateName(String name){
+		this.name=name;
 	}
 }

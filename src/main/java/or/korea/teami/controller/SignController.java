@@ -36,14 +36,14 @@ public class SignController {
 
 	@ApiOperation(value = "로그인",notes = "로그인 한다.")
 	@PostMapping(value = "/signin")
-	public String signin(@ApiParam(value="회원 ID : 이메일",required = true) @RequestParam String email,
+	public ResponseEntity<String> signin(@ApiParam(value="회원 ID : 이메일",required = true) @RequestParam String email,
 										@ApiParam(value="비밀번호",required = true) @RequestParam String password){
 		User user=userRepository.findByEmail(email).orElseThrow(SigninFailedException::new);
 		if (!passwordEncoder.matches(password,user.getPassword())){
 			throw new PasswordNotMatchedException();
 		}
 
-		return jwtTokenProvider.createToken(String.valueOf(user.getId()),user.getRoles());
+		return ResponseEntity.ok(jwtTokenProvider.createToken(String.valueOf(user.getEmail()),user.getRoles()));
 	}
 
 	@ApiOperation(value="회원가입",notes = "회원가입 한다.")
@@ -51,8 +51,6 @@ public class SignController {
 	public ResponseEntity<HttpStatus> signup(@ApiParam(value = "회원ID : 이메일", required = true) @RequestParam String email,
 											@ApiParam(value = "비밀번호", required = true) @RequestParam String password,
 											@ApiParam(value = "이름", required = true) @RequestParam String name){
-		SimpleDateFormat format1 = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss");
-		Date time = new Date();
 
 		userRepository.save(User.builder()
 			.email(email)

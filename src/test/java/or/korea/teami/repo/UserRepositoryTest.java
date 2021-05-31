@@ -42,6 +42,9 @@ class UserRepositoryTest {
 		assertNotNull(user);
 		assertTrue(user.isPresent());
 		assertEquals(user.get().getName(),name);
+		assertEquals(user.get().getEmail(),email);
+
+		System.out.println(user.get().getEmail());
 
 
 
